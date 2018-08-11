@@ -1,0 +1,63 @@
+<!-- Standard build script -->
+<project name="CompanySearch" default="">
+
+	<!-- specify properties in build.properties -->
+	<property file="build.properties" />
+
+	<!-- Clean out previously built project files and javadoc -->
+	<target name="clean">
+		<!-- Deletes the folder containing compiled Java -->
+		<delete dir="${mainBuildDir}" includeemptydirs="true" quiet="true" />
+
+		<!-- remove all generated files -->
+		<delete dir="${genDir}" quiet="true" />
+	</target>
+
+	<!-- Setup Steps Required Before Compilation -->
+	<target name="init">
+
+		<!-- creates the folder to contain the compiled Java source -->
+		<mkdir dir="${mainBuildDir}" />
+
+		<!-- creates (generated/docs/javadoc) -->
+		<mkdir dir="${genJavadocDir}" />
+
+		<!-- creates (generated/src/main/java) -->
+		<mkdir dir="${genMainJavaSrcDir}" />
+
+		<!-- creates log directory -->
+		<mkdir dir="${logDir}" />
+	</target>
+
+	<!-- compiles java source -->
+	<target name="compile" depends="init">
+		<javac destdir="${mainBuildDir}" deprecation="yes" debug="yes"
+			includeantruntime="false">
+			<src path="${mainJavaSrcDir}" />
+		</javac>
+	</target>
+
+	<target name="clean-gen-src">
+		<delete dir="${genSrcDir}" quiet="true" />
+	</target>
+
+	<!-- runs the program with compiled code -->
+	<target name="run" depends="compile">
+		<java classname="${mainClass}" fork="yes">
+			<classpath>
+				<pathelement location="${mainBuildDir}" />
+			</classpath>
+			<arg line="${args}" />
+		</java>
+	</target>
+
+	<!-- Make the JavaDoc -->
+	<target name="javadoc" depends="init">
+
+		<!-- generate the javadoc -->
+		<javadoc sourcepath="${mainJavaSrcDir}" packagenames="${javadocPackageNames}"
+			destdir="${genJavadocDir}" Private="yes">
+			<classpath refid="build.class.path" />
+		</javadoc>
+	</target>
+</project>
