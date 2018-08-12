@@ -1,5 +1,5 @@
 <!-- Standard build script -->
-<project name="CompanySearch" default="dist">
+<project name="CompanySearch" default="dist" basedir=".">
 
 	<!-- specify properties in build.properties -->
 	<property file="build.properties" />
@@ -36,13 +36,21 @@
 	
 	<!-- Make project JAR file -->
 		<target name="dist" depends="compile">
-			<jar destfile="${distDir}/${ant.project.name}.jar" basedir="${mainBuildDir}" />
+			<jar destfile="${distDir}/${jarName}.jar" basedir="${mainBuildDir}">
+				<fileset dir="${mainBuildDir}">
+			        <include name="**/*"/>
+				</fileset>
+				<fileset dir="${srcDir}">
+					<include name="**/*"/>
+					<exclude name="**/*.java"/>
+		      </fileset>
+			</jar>
 		</target>
 
 	<!-- Clean out previously built project files and javadoc -->
 	<target name="clean">
 		<!-- Deletes the folder containing the packaged final result -->
-				<delete dir="${distDir}" quiet="true" />
+		<delete dir="${distDir}" quiet="true" />
 		
 		<!-- Deletes the folder containing compiled Java -->
 		<delete dir="${mainBuildDir}" includeemptydirs="true" quiet="true" />
@@ -84,26 +92,15 @@
 	</target>
 
 	<!-- runs the program with compiled code -->
-	<target name="run" depends="compile">
+	<target name="run" depends="dist">
 			<java classname="${mainClass}" fork="yes">
 				<classpath refid="runtime.class.path" />
 				<classpath>
-					<pathelement location="${mainBuildDir}" />
+					<pathelement location="${distDir}/${jarName}.jar" />
 				</classpath>
 				<arg line="${args}" />
 			</java>
 		</target>
-
-	<!-- runs the program using the program's generated JAR -->
-	<target name="runJar" depends="dist">
-		<java classname="${mainClass}" fork="yes">
-			<classpath refid="runtime.class.path" />
-			<classpath>
-				<pathelement location="${distDir}/${ant.project.name}.jar" />
-			</classpath>
-			<arg line="${args}" />
-		</java>
-	</target>
 
 	
 	<!-- Make the JavaDoc -->
