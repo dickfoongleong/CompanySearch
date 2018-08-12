@@ -24,6 +24,8 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Logger;
 
 /**
  * Application for recording Company information.
@@ -38,6 +40,7 @@ public class CompanySearchApplication extends JFrame implements Runnable {
    */
   private static final long serialVersionUID = 19960314019950113L;
 
+  private static final Logger LOGGER = Logger.getLogger(CompanySearchApplication.class);
   /**
    * The path of output file.
    */
@@ -112,6 +115,8 @@ public class CompanySearchApplication extends JFrame implements Runnable {
    * Set up the application UI.
    */
   public CompanySearchApplication() {
+    LOGGER.info("INFO: Start up");
+    
     setDefaultCloseOperation(EXIT_ON_CLOSE);
     setTitle("Company Information");
     
@@ -129,6 +134,8 @@ public class CompanySearchApplication extends JFrame implements Runnable {
    * Set up the components.
    */
   private void setupUserInterface() {
+    LOGGER.debug("DEBUG: setupUserInterface");
+    
     setupControls();
     setupMenus();
     
@@ -241,6 +248,8 @@ public class CompanySearchApplication extends JFrame implements Runnable {
    * Setup all the control components on UI.
    */
   private void setupControls() {
+    LOGGER.debug("DEBUG: setupControls");
+    
     addBtn = new JButton("Add Company");
     addBtn.addActionListener(new AddListener());
     
@@ -259,6 +268,8 @@ public class CompanySearchApplication extends JFrame implements Runnable {
   }
   
   private void setupMenus() {
+    LOGGER.debug("DEBUG: setupMenus");
+    
     JMenuBar menuBar = new JMenuBar();
     setJMenuBar(menuBar);
     
@@ -321,12 +332,16 @@ public class CompanySearchApplication extends JFrame implements Runnable {
    * Save the inserted list of companies to csv file.
    */
   private void saveFile() {
+    LOGGER.debug("DEBUG: saveFile");
+    
     try {
       List<Company> companiesInFile = new ArrayList<Company>();
       outputFile = new File(OUTPUT_FILE_PATH);
       FileWriter writer = new FileWriter(outputFile, true);
       
       if (!outputFile.createNewFile()) {
+        LOGGER.debug("DEBUG: OutputFile is existed");
+        
         Scanner fileScanner = new Scanner(outputFile);
         String companyInfo;
         String[] informations;
@@ -337,6 +352,7 @@ public class CompanySearchApplication extends JFrame implements Runnable {
         String comState;
         int comZip;
         
+        LOGGER.trace("TRACE: Load companies in output file");
         while (fileScanner.hasNext()) {
           companyInfo = fileScanner.nextLine();
           informations = companyInfo.split(",");
@@ -346,6 +362,8 @@ public class CompanySearchApplication extends JFrame implements Runnable {
           comCity = informations[3];
           comState = informations[4];
           comZip = Integer.parseInt(informations[5]);
+          
+          LOGGER.trace("TRACEL: Got the company name: " + comName);
           
           Company comp;
           if (comFloor.equals("")) {
@@ -359,15 +377,31 @@ public class CompanySearchApplication extends JFrame implements Runnable {
         fileScanner.close();
       }
       
+      LOGGER.debug("DEBUG: Write companies in list to file");
+
+      int companiesAdded = 0;
       if (companiesInFile.isEmpty()) {
+        
+        LOGGER.trace("TRACE: Write companies in list to file");
+        
         for (Company comp : companyList) {
+          
+          LOGGER.trace("TRACE: Writing " + comp.getName() + " to file");
+          
           writer.append(comp.toString() + "\n");
+          companiesAdded++;
         }
       } else {
+        
+        LOGGER.trace("TRACE: Write companies which are not already in file");
+        
         boolean isExisted;
         for (Company comp : companyList) {
           isExisted = false;
           for (Company compInFile : companiesInFile) {
+            
+            LOGGER.trace("TRACE: Comparing " + comp.getName() + " and " + compInFile.getName());
+            
             if (comp.compareTo(compInFile) == 0) {
               isExisted = true;
             }
@@ -375,19 +409,26 @@ public class CompanySearchApplication extends JFrame implements Runnable {
           
           if (!isExisted) {
             writer.append(comp.toString() + "\n");
+            companiesAdded++;
           }
         }
       }
       
       writer.close();
-      setStatus("SUCCESS: " + companyList.size() + " companies are added to " + OUTPUT_FILE_PATH);
+      setStatus(companiesAdded + " companies are added to " + OUTPUT_FILE_PATH);
       companyList.clear();
     } catch (IOException ioe) {
-      setStatus("ERROR: " + OUTPUT_FILE_PATH + " cannot be open.");
+      LOGGER.warn("WARN: " + OUTPUT_FILE_PATH + " cannot be open");
+      
+      setStatus("List cannot be saved due to output file missing.");
     } catch (SecurityException sec) {
-      setStatus("ERROR: " + OUTPUT_FILE_PATH + " cannot be written.");
+      LOGGER.warn("WARN: " + OUTPUT_FILE_PATH + " cannot be written");
+      
+      setStatus("List cannot be saved due to the rights for writing on output file missing.");
     } catch (NumberFormatException num) { 
-      setStatus("ERROR: " + OUTPUT_FILE_PATH + " contains non-numeric zip code");
+      LOGGER.warn("WARN: " + OUTPUT_FILE_PATH + " contains non-numeric zip code");
+      
+      setStatus("Output file contains non-numeric zip code");
     }
     
   }
@@ -396,6 +437,8 @@ public class CompanySearchApplication extends JFrame implements Runnable {
    * Add company to the list.
    */
   private void addCompany() {
+    LOGGER.debug("DEBUG: Add company to list");
+    
     Company company;
     String name;
     String street;
@@ -406,8 +449,7 @@ public class CompanySearchApplication extends JFrame implements Runnable {
     if (nameInputField.getText().equals("") || streetInputField.getText().equals("")
         || cityInputField.getText().equals("") || stateInputField.getText().equals("")
         || zipInputField.getText().equals("")) {
-      
-      setStatus("ERROR: Required information(s) Missing.");
+      setStatus("Required information(s) Missing.");
     } else {
       try {
         name = nameInputField.getText();
@@ -417,7 +459,9 @@ public class CompanySearchApplication extends JFrame implements Runnable {
         zip = Integer.parseInt(zipInputField.getText());
         
       } catch (NumberFormatException nfe) {
-        setStatus("ERROR: Zip code must be numbers.");
+        LOGGER.warn("WARN: Non-numeric zip code");
+        
+        setStatus("Zip code must be numbers.");
         return;
       }
       
@@ -428,15 +472,17 @@ public class CompanySearchApplication extends JFrame implements Runnable {
         company = new Company(name, street, floor, city, state, zip); 
       }
       
+      LOGGER.trace("TRACE: Checking if input company is on list");
       for (Company com : companyList) {
+        LOGGER.trace("TRACE: Checking " + com.getName());
         if (company.compareTo(com) == 0) {
-          setStatus("FAILURE: Company already in list.");
+          setStatus("Company already in list.");
           return;
         }
       }
       
       companyList.add(company);
-      setStatus("SUCCESS: " + companyList.size() + " companies in the list.");
+      setStatus(companyList.size() + " companies in the list.");
       
       resetInformation();
     }
@@ -446,6 +492,8 @@ public class CompanySearchApplication extends JFrame implements Runnable {
    * Reset all the field to empty.
    */
   private void resetInformation() {
+    LOGGER.debug("DEBUG: resetInformation");
+    
     nameInputField.setText("");
     streetInputField.setText("");
     floorInputField.setText("");
@@ -455,6 +503,8 @@ public class CompanySearchApplication extends JFrame implements Runnable {
   }
 
   private void enableControls(boolean enable) {
+    LOGGER.debug("DEBUG: enableControls");
+    
     nameInputField.setEditable(enable);
     streetInputField.setEditable(enable);
     floorInputField.setEditable(enable);
@@ -483,6 +533,7 @@ public class CompanySearchApplication extends JFrame implements Runnable {
   }
   
   public static void main(String[] args) {
+    BasicConfigurator.configure();
     new CompanySearchApplication();
   }
 

@@ -1,11 +1,49 @@
 <!-- Standard build script -->
-<project name="CompanySearch" default="">
+<project name="CompanySearch" default="dist">
 
 	<!-- specify properties in build.properties -->
 	<property file="build.properties" />
 
+	<!-- main build classpath -->
+	<path id="build.class.path">
+		<fileset dir="${envLibDir}">
+			<include name="**/*.jar" />
+		</fileset>
+		<fileset dir="${mainLibDir}">
+			<include name="**/*.jar" />
+		</fileset>
+	</path>
+
+	<!-- runtime build classpath -->
+	<path id="runtime.class.path">
+		<fileset dir="${mainLibDir}">
+			<include name="**/*.jar" />
+		</fileset>
+	</path>
+
+	<!-- generation buildpath -->
+	<path id="gen.class.path">
+		<fileset dir="${envLibDir}">
+			<include name="**/*.jar" />
+		</fileset>
+		<fileset dir="${genLibDir}">
+			<include name="**/*.jar" />
+		</fileset>
+		<fileset dir="${mainLibDir}">
+			<include name="**/*.jar" />
+		</fileset>
+	</path>
+	
+	<!-- Make project JAR file -->
+		<target name="dist" depends="compile">
+			<jar destfile="${distDir}/${ant.project.name}.jar" basedir="${mainBuildDir}" />
+		</target>
+
 	<!-- Clean out previously built project files and javadoc -->
 	<target name="clean">
+		<!-- Deletes the folder containing the packaged final result -->
+				<delete dir="${distDir}" quiet="true" />
+		
 		<!-- Deletes the folder containing compiled Java -->
 		<delete dir="${mainBuildDir}" includeemptydirs="true" quiet="true" />
 
@@ -15,6 +53,9 @@
 
 	<!-- Setup Steps Required Before Compilation -->
 	<target name="init">
+
+		<!-- creates the folder to contain the packaged final result (JAR file) -->
+		<mkdir dir="${distDir}" />
 
 		<!-- creates the folder to contain the compiled Java source -->
 		<mkdir dir="${mainBuildDir}" />
@@ -34,6 +75,7 @@
 		<javac destdir="${mainBuildDir}" deprecation="yes" debug="yes"
 			includeantruntime="false">
 			<src path="${mainJavaSrcDir}" />
+			<classpath refid="build.class.path" />
 		</javac>
 	</target>
 
@@ -43,14 +85,27 @@
 
 	<!-- runs the program with compiled code -->
 	<target name="run" depends="compile">
+			<java classname="${mainClass}" fork="yes">
+				<classpath refid="runtime.class.path" />
+				<classpath>
+					<pathelement location="${mainBuildDir}" />
+				</classpath>
+				<arg line="${args}" />
+			</java>
+		</target>
+
+	<!-- runs the program using the program's generated JAR -->
+	<target name="runJar" depends="dist">
 		<java classname="${mainClass}" fork="yes">
+			<classpath refid="runtime.class.path" />
 			<classpath>
-				<pathelement location="${mainBuildDir}" />
+				<pathelement location="${distDir}/${ant.project.name}.jar" />
 			</classpath>
 			<arg line="${args}" />
 		</java>
 	</target>
 
+	
 	<!-- Make the JavaDoc -->
 	<target name="javadoc" depends="init">
 
