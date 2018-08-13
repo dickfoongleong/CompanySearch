@@ -18,3 +18,8 @@
 2018-08-13 11:24:46,198 [companylist.generator.CompanySearchApplication] (CompanySearchApplication.java:251) DEBUG - DEBUG: setupControls
 2018-08-13 11:24:46,236 [companylist.generator.CompanySearchApplication] (CompanySearchApplication.java:271) DEBUG - DEBUG: setupMenus
 2018-08-13 11:24:46,303 [companylist.generator.CompanySearchApplication] (CompanySearchApplication.java:506) DEBUG - DEBUG: enableControls
+2018-08-13 13:52:38,823 [companylist.generator.CompanySearchApplication] (CompanySearchApplication.java:118) INFO  - INFO: Start up
+2018-08-13 13:52:38,855 [companylist.generator.CompanySearchApplication] (CompanySearchApplication.java:137) DEBUG - DEBUG: setupUserInterface
+2018-08-13 13:52:38,855 [companylist.generator.CompanySearchApplication] (CompanySearchApplication.java:251) DEBUG - DEBUG: setupControls
+2018-08-13 13:52:38,889 [companylist.generator.CompanySearchApplication] (CompanySearchApplication.java:271) DEBUG - DEBUG: setupMenus
+2018-08-13 13:52:38,936 [companylist.generator.CompanySearchApplication] (CompanySearchApplication.java:506) DEBUG - DEBUG: enableControls
