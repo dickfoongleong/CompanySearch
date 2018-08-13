@@ -1,1 +1,1 @@
-java -Xmx2500m -classpath classes/*;dist\CompanySearch.jar companylist.generator.CompanySearchApplication
+java -jar dist\CompanySearch.jar
