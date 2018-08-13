@@ -534,7 +534,11 @@ public class CompanySearchApplication extends JFrame implements Runnable {
   
   public static void main(String[] args) {
     BasicConfigurator.configure();
-    new CompanySearchApplication();
+    javax.swing.SwingUtilities.invokeLater(new Runnable() {
+      public void run() {
+        new CompanySearchApplication();
+      }
+    });
   }
 
 }
