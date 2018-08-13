@@ -1,0 +1,20 @@
+2018-08-12 14:32:35,429 [companylist.generator.CompanySearchApplication] (CompanySearchApplication.java:118) INFO  - INFO: Start up
+2018-08-12 14:32:35,462 [companylist.generator.CompanySearchApplication] (CompanySearchApplication.java:137) DEBUG - DEBUG: setupUserInterface
+2018-08-12 14:32:35,462 [companylist.generator.CompanySearchApplication] (CompanySearchApplication.java:251) DEBUG - DEBUG: setupControls
+2018-08-12 14:32:35,513 [companylist.generator.CompanySearchApplication] (CompanySearchApplication.java:271) DEBUG - DEBUG: setupMenus
+2018-08-12 14:32:35,565 [companylist.generator.CompanySearchApplication] (CompanySearchApplication.java:506) DEBUG - DEBUG: enableControls
+2018-08-12 14:40:45,180 [companylist.generator.CompanySearchApplication] (CompanySearchApplication.java:118) INFO  - INFO: Start up
+2018-08-12 14:40:45,183 [companylist.generator.CompanySearchApplication] (CompanySearchApplication.java:137) DEBUG - DEBUG: setupUserInterface
+2018-08-12 14:40:45,183 [companylist.generator.CompanySearchApplication] (CompanySearchApplication.java:251) DEBUG - DEBUG: setupControls
+2018-08-12 14:40:45,231 [companylist.generator.CompanySearchApplication] (CompanySearchApplication.java:271) DEBUG - DEBUG: setupMenus
+2018-08-12 14:40:45,294 [companylist.generator.CompanySearchApplication] (CompanySearchApplication.java:506) DEBUG - DEBUG: enableControls
+2018-08-13 11:12:02,315 [companylist.generator.CompanySearchApplication] (CompanySearchApplication.java:118) INFO  - INFO: Start up
+2018-08-13 11:12:02,348 [companylist.generator.CompanySearchApplication] (CompanySearchApplication.java:137) DEBUG - DEBUG: setupUserInterface
+2018-08-13 11:12:02,349 [companylist.generator.CompanySearchApplication] (CompanySearchApplication.java:251) DEBUG - DEBUG: setupControls
+2018-08-13 11:12:02,581 [companylist.generator.CompanySearchApplication] (CompanySearchApplication.java:271) DEBUG - DEBUG: setupMenus
+2018-08-13 11:12:02,790 [companylist.generator.CompanySearchApplication] (CompanySearchApplication.java:506) DEBUG - DEBUG: enableControls
+2018-08-13 11:24:46,153 [companylist.generator.CompanySearchApplication] (CompanySearchApplication.java:118) INFO  - INFO: Start up
+2018-08-13 11:24:46,198 [companylist.generator.CompanySearchApplication] (CompanySearchApplication.java:137) DEBUG - DEBUG: setupUserInterface
+2018-08-13 11:24:46,198 [companylist.generator.CompanySearchApplication] (CompanySearchApplication.java:251) DEBUG - DEBUG: setupControls
+2018-08-13 11:24:46,236 [companylist.generator.CompanySearchApplication] (CompanySearchApplication.java:271) DEBUG - DEBUG: setupMenus
+2018-08-13 11:24:46,303 [companylist.generator.CompanySearchApplication] (CompanySearchApplication.java:506) DEBUG - DEBUG: enableControls

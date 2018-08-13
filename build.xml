@@ -34,18 +34,18 @@
 		</fileset>
 	</path>
 	
-	<!-- Make project JAR file -->
-		<target name="dist" depends="compile">
-			<jar destfile="${distDir}/${jarName}.jar" basedir="${mainBuildDir}">
-				<fileset dir="${mainBuildDir}">
-			        <include name="**/*"/>
-				</fileset>
-				<fileset dir="${srcDir}">
-					<include name="**/*"/>
-					<exclude name="**/*.java"/>
-		      </fileset>
-			</jar>
-		</target>
+	<!-- make project JAR file -->
+	<target name="dist" depends="compile">
+		<jar jarfile="${distDir}/${jarName}.jar" manifest="${srcDir}/${manifestForJAR}">
+			<fileset dir="${mainBuildDir}">
+				<include name="**/*"/>
+	      	</fileset>
+	      	<fileset dir="${srcDir}">
+	      		<include name="**/*"/>
+	      		<exclude name="**/*.java"/>
+	      	</fileset>
+	    </jar>
+	</target>
 
 	<!-- Clean out previously built project files and javadoc -->
 	<target name="clean">
