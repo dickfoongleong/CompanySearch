@@ -1,1 +1,1 @@
-java cfm dist\CompanySearch.jar src\Manifest.txt classes\*.class
+java -jar dist\CompanySearch.jar
